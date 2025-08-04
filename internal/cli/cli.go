@@ -2,10 +2,11 @@ package cli
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"os/exec"
 	"regexp"
+
+	"github.com/fatih/color"
 )
 
 const (
@@ -16,19 +17,19 @@ const (
 func Run() {
 	err := validateArgs(os.Args)
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
-		fmt.Println(usageText)
+		color.Red("Error: %s", err)
+		color.Cyan(usageText)
 		return
 	}
 
 	err = cloneTemplateRepository(os.Args[2])
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
+		color.Red("Error: %s", err)
 	}
 
 	err = installGenerator()
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
+		color.Red("Error: %s", err)
 	}
 }
 
@@ -73,7 +74,7 @@ func cloneTemplateRepository(dir string) error {
 		return errors.New("failed to clone repository github.com/sk1t0n/echo-mvc-template")
 	}
 
-	fmt.Printf("Repository successfully cloned to %s\n", dir)
+	color.Green("Repository successfully cloned to %s", dir)
 
 	return nil
 }
@@ -86,7 +87,7 @@ func installGenerator() error {
 		return errors.New("failed to install github.com/sk1t0n/echo-mvc-generator")
 	}
 
-	fmt.Println("CLI echo-mvc-generator installed successfully")
+	color.Green("CLI echo-mvc-generator installed successfully")
 
 	return nil
 }
